@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-3">Регистрация</h2>
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+            <div class="invalid-feedback">
+                Пожалуйста, введите корректное имя пользователя.
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.password1.label_tag }}
+            {{ form.password1 }}
+            <div class="invalid-feedback">
+                Ваш пароль должен соответствовать требованиям безопасности.
+            </div>
+        </div>
+        <div class="form-group">
+            {{ form.password2.label_tag }}
+            {{ form.password2 }}
+            <div class="invalid-feedback">
+                Пароли не совпадают.
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Регистрация</button>
+    </form>
+    <p class="mt-3">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>.</p>
+</div>
+{% endblock %}

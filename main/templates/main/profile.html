@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+
+{% block content %}<br>
+    <h2>{{ user.username }} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editProfileModal">Редактировать</button></h2>
+    <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h3>Контакты</h3>
+    <h4>Почта: {{ user.email }}</h4>
+    <h4>Телефон: {{ user.phone_number }}</h4>
+    {% if user.is_employer %}<br><br>
+        <h3>Компания: {{ user.company_name }}</h3><br>
+        <h4>Активные вакансии:</h4>
+        <ul>
+            {% for job in active_jobs %}
+                <li>{{ job.title }}</li>
+            {% endfor %}
+        </ul><br>
+        <h4>Неактивные вакансии:</h4>
+        <ul>
+            {% for job in inactive_jobs %}
+                <li>{{ job.title }}</li>
+            {% endfor %}
+        </ul><br>
+        <h4>Отзывы:</h4>
+        <ul>
+            {% for review in user.reviews.all %}
+                <li>{{ review.from_user.username }}: {{ review.comment }} ({{ review.rating }}/5)</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <br><br><br>
+        <h3>Навыки: {{ user.skills }}</h3><br>
+        <h3>Желаемая оплата: ${{ user.desired_salary }} per hour</h3><br>
+        <h3>Опыт: {{ user.experience }}</h3><br>
+        <h4>Отзывы:</h4>
+        <ul>
+            {% for review in user.reviews.all %}
+                <li>{{ review.from_user.username }}: {{ review.comment }} ({{ review.rating }}/5)</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

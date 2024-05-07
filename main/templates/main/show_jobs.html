@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<h2>Вакансии</h2>
+
+<form method="get" action="{% url 'jobs' %}">
+    <input type="text" name="q" placeholder="Поиск работ..." value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
+
+<ul>
+    {% for job in jobs %}
+    <li>{{ job.title }} - {{ job.employer.username }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
